@@ -1,0 +1,46 @@
+(temp.h)
+
+#pragma once
+#include<cstring>
+template <typename Type>  // 함수템플릿의  정의
+Type max(Type &a, Type &b)
+{
+	if(a>=b) return a;
+	else return b;
+}
+template <> 
+char *max(char *&a, char *&b)  // 템플릿 전문화 정의
+{
+	if(strcmp(a, b)>0) return a;
+	else return b;
+}
+
+(main.cpp)
+#include <iostream>
+using namespace std;
+#include "temp.h"
+
+/* template <typename Type>  // 함수템플릿의 선언
+Type max(Type &a, Type &b);
+
+template <> 
+char *max(char *&a, char *&b);  // 템플릿 전문화 선언
+*/
+
+int main()
+{
+	int a=10, b=20, ires;
+	double x=2.4, y=3.5, dres;
+	char *ap="apple";
+	char *bp="banana";
+	char *resp;
+
+	ires=max(a, b);  // int형 값으로 호출
+	cout << "두 정수 중에서 큰 값 : " << ires << endl;
+	dres=max(x, y);  // double형 값으로 호출
+	cout << "두 실수 중에서 큰 값 : " << dres << endl;
+	resp=max(ap, bp);
+	cout << "두 문자열 중에서 큰 문자열 : " << resp << endl;
+
+	return 0;
+}

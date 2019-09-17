@@ -1,0 +1,66 @@
+(ISmartPointer.h)
+#ifndef _ISmartPointer_H
+#define _ ISmartPointer _H
+template<typename T>
+struct Isp
+{
+	virtual ~Isp() {};
+	virtual T * operator->() const = 0;
+	virtual T * operator&() const = 0;
+	virtual T & operator*() const = 0;
+};
+#endif
+
+(my_sp.h)
+#ifndef _MY_SP_H
+#define _MY_SP_H
+#include "ISmartPointer.h"
+template<typename T>
+class my_sp : public Isp<T> {
+public:
+	my_sp(T * p) : ptr(p) {}
+	virtual ~my_sp() { delete ptr; }
+	T * operator->() const  { return ptr; }
+	T * operator&() const { return ptr; }
+	T & operator*() const { return *ptr; }
+private:
+	T * ptr;
+};
+#endif
+
+(light.h)
+#include <iostream>
+#include "my_sp.h"
+using namespace std;
+class Light {
+public:
+	Light() : _stat(false) { cout << "call " << __FUNCTION__ << endl; }
+	~Light() { cout << "call " << __FUNCTION__ << endl; }
+	void setOn() { _stat = true; }
+	void setOff() { _stat = false; }
+	bool getStat() { return _stat; }
+private:
+	bool _stat;
+};
+inline void room_ctl(my_sp<Light>& r, bool on = true) {
+	on ? r->setOn() : r->setOff();
+}
+
+(main.cpp)
+#include <iostream>
+using namespace std;
+#include ¡°light.h"
+
+int main(int argc, char * argv[]) 
+{
+	my_sp<Light> room1(new Light);
+	my_sp<Light> room2(new Light);
+	my_sp<Light> room3(new Light);
+	room_ctl(room1, false);
+	room_ctl(room2);
+	room_ctl(room3, false);
+	cout << boolalpha << "room1 : " << room1->getStat() << endl;
+	cout << "room2 : " << room2->getStat() << endl;
+	cout << "room3 : " << room3->getStat() << endl;
+	return 0;
+}

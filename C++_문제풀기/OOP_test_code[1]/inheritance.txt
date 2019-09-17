@@ -1,0 +1,130 @@
+(MoneyBox.h) // 기초클래스(MoneyBox) 선언
+#pragma once
+#include "MyString.h"
+class MoneyBox{
+private:
+	MyString name; // 예금주
+	int sum; // 잔액
+public:
+	MoneyBox(const char *np="아무개", int m=0); // 오버로디드생성자
+	MoneyBox(const MoneyBox &br); // 복사생성자
+	void save(int m); // 저금
+	void use(int m); // 사용
+	void setName(MyString name); // name멤버수정
+	MyString getName(); // name멤버값리턴
+	void setSum(int sum); // sum멤버수정
+	int getSum(); // sum멤버값리턴
+};
+
+(MoneyBox.cpp)
+// MoneyBox 멤버함수의정의(MoneyBox.cpp)
+#include <iostream>
+	using namespace std;
+#include <string.h>
+#include "MoneyBox.h"
+//-------------------------------------------------------------------------
+MoneyBox::MoneyBox(const char *name, int sum) : name(name) // 멤버명과전달인자명이같은데괜찮은가?
+{
+	this->sum=sum;
+}
+//-------------------------------------------------------------------------
+MoneyBox::MoneyBox(const MoneyBox &br) : name(br.name)
+{
+	this->sum=br.sum;
+}
+//-------------------------------------------------------------------------
+void MoneyBox::save(int money)
+{
+	if(money>=0)
+	{
+		this->sum += money;
+	}
+}
+//-------------------------------------------------------------------------
+void MoneyBox::use(int money)
+{
+	if(money >= 0 && money <= this->sum)
+	{
+		this->sum -= money;
+	}
+}
+//-------------------------------------------------------------------------
+void MoneyBox::setName(MyString name)
+{
+	this->name = name;
+}
+//-------------------------------------------------------------------------
+MyString MoneyBox::getName()
+{
+	return this->name;
+}
+//-------------------------------------------------------------------------
+void MoneyBox::setSum(int sum)
+{
+	this->sum = sum;
+}
+//-------------------------------------------------------------------------
+int MoneyBox::getSum()
+{
+	return this->sum;
+}
+//-------------------------------------------------------------------------
+
+
+(iMoneyBox.h)
+// 유도클래스(iMoneyBox) 선언
+#pragma once
+#include "MoneyBox.h"
+class iMoneyBox : public MoneyBox
+{
+private:
+	int limit; // 저금통의한계금액을저장하기위해추가된데이터멤버
+public:
+	iMoneyBox(const char *np="아무개", int m=0, int l=1000); // 생성자
+	void setLimit(int limit); // limit 멤버수정
+	int getLimit(); // limit 멤버의값리턴
+	int check(); // 현재사용량검사
+};
+
+(iMoneyBox.cpp)
+// iMoneyBox의선언, 멤버함수의정의 (iMoneyBox.cpp)
+#include <iostream>
+	using namespace std;
+#include "imoneybox.h"
+iMoneyBox::iMoneyBox(const char *np, int m, int l) : MoneyBox(np, m)
+{
+	this->limit=l;
+}
+//-------------------------------------------------------------------------
+int iMoneyBox::check()
+{
+	int temp;
+	temp=int((double)this->getSum()/this->limit*100);
+	return temp;
+}
+//-------------------------------------------------------------------------
+void iMoneyBox::setLimit(int limit)
+{
+	this->limit = limit;
+}
+//-------------------------------------------------------------------------
+int iMoneyBox::getLimit()
+{
+	return this->limit;
+}
+
+(main.cpp)
+#include<iostream>
+using namespace std;
+#include "iMoneyBox.h"
+int main()
+{
+	iMoneyBox a("철이", 100, 2000), b("메텔", 500, 3000);
+	a.save(600);
+	b.use(100);
+	cout<<a.getName().getStr()<<" " <<a.getSum() << " " << a.getLimit() << endl;
+	cout<<b.getName().getStr()<<" " <<b.getSum() << " " << b.getLimit() << endl;
+	cout << "철이의저금통사용량: " << a.check() << '%' << endl;
+	cout << "메텔의저금통사용량: " << b.check() << '%' << endl;
+	return 0;
+}
