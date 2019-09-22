@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6A456245-38EA-414C-9332-E3BF4D2F3687}</ProjectGuid>
+    <ProjectGuid>{22F16203-60C2-4225-BE39-46BF53F01701}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>SmartPointer</RootNamespace>
+    <RootNamespace>recursiveSelectsort</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -78,12 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ISmartPointer.h" />
-    <ClInclude Include="light.h" />
-    <ClInclude Include="my_sp.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="recursiveSelect.sort.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
